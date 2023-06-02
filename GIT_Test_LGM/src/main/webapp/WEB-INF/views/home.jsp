@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>
-	User 디렉토리 삭제 후 저장 - 재변경
+	User 디렉토리 삭제 후 저장 - 재변경 
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
