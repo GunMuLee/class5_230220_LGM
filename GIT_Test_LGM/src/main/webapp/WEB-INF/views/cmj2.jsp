@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>최민진 작성!!!!!!</h1>
+	<h1>최민진이 생성한 cmj2.jsp</h1>
 
 </body>
 </html>
