@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>
-	돌아가기 전 상태
+	User 디렉토리 삭제 후 저장
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
