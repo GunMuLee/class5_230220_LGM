@@ -10,5 +10,6 @@ public class memberController {
 	int member;
 	int board2;
 	int member2;
+	int member3;
 	
 }
