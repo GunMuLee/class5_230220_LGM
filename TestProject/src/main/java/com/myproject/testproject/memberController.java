@@ -6,5 +6,7 @@ import org.springframework.stereotype.Controller;
 public class memberController {
 	
 	int i;
+	int board2;
+	int member2;
 	
 }
