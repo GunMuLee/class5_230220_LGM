@@ -52,12 +52,4 @@
 <mybatis-spring:scan base-package="com.self.study"/>
 		
 		
-<!-- 웹 소켓 설정들 -->
-<websocket:handlers>
-	<websocket:mapping handler="chattingHandler" path="/chatting"/>
-	<websocket:sockjs></websocket:sockjs>
-</websocket:handlers>
-
-<bean id="chattingHandler" class="org.practice.handler.ChattingHandler"/>
-
 </beans>
