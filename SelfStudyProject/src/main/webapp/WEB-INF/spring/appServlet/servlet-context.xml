@@ -26,7 +26,15 @@
 	<context:component-scan base-package="com.self.study" />
 	
 	<!-- websocket handler -->
-    
+<!--     <beans:bean id="echoHandler" class="com.self.study.handler.EchoHandler" />         -->
+
+	<websocket:handlers>
+	    <websocket:mapping handler="echoHandler" path="/echo"/>
+	    <websocket:handshake-interceptors>
+	        <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+	    </websocket:handshake-interceptors>
+	    <websocket:sockjs/>
+	</websocket:handlers>
 	
 	
 	

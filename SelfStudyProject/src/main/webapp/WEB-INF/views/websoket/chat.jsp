@@ -5,78 +5,115 @@
 <html>
 <head>
 <title>Simple Chat</title>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+	crossorigin="anonymous">
 </head>
 <body>
-    <div>
-        <button type="button" onclick="openSocket();">대화방 참여</button>
-        <button type="button" onclick="closeSocket();">대회방 나가기</button>
-    	<br/><br/><br/>
-  		메세지 입력 : 
-        <input type="text" id="sender" value="${sessionScope.id}" style="display: none;">
-        <input type="text" id="messageinput">
-        <button type="button" onclick="send();">메세지 전송</button>
-        <button type="button" onclick="javascript:clearText();">대화내용 지우기</button>
-    </div>
-    <!-- Server responses get written here -->
-    <div id="messages">
-    </div>
+<div class="container">
+	<div class="col-6">
+		<label><b>채팅방</b></label>
+	</div>
+	<div>
+		<div id="msgArea" class="col">
+		
+		</div>
+		<div class="col-6">
+		<div class="input-group mb-3">
+			<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="col-6">
+	</div>
+</div>
     <!-- websocket javascript -->
-    <script type="text/javascript">
-        var ws;
-        var messages = document.getElementById("messages");
-        
-        function openSocket(){
-            if(ws !== undefined && ws.readyState !== WebSocket.CLOSED){
-                writeResponse("WebSocket is already opened.");
-                return;
-            }
-            //웹소켓 객체 만드는 코드
-            ws = new WebSocket("ws://" + location.host + "/study/chatRoom/${param.roomId}");
-            
-	            ws.onopen = function(event){
-	                if(event.data === undefined){
-	              		return;
-	                }
-	                writeResponse(event.data);
-	            };
-            
-            ws.onmessage = function(event){
-                console.log('writeResponse');
-                console.log(event.data)
-                writeResponse(event.data);
-            };
-            
-            ws.onclose = function(event){
-                writeResponse("대화 종료");
-            }
-            
-        }
-        
-        function send(){
-            var message = document.getElementById("messageinput").value;
-            var sender = document.getElementById("sender").value;
-            var roomId = "${param.roomId}";
-            var text = message + "," + sender + "," + roomId;
-            ws.send(text);
-            document.getElementById("messageinput").value = "";
-        }
+<script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.0.js"></script>
+<script type="text/javascript">
 
-        
-        function closeSocket(){
-            ws.close();
-        }
-        
-        function writeResponse(text){
-            messages.innerHTML += "<br/>"+text;
-        }
+//전송 버튼 누르는 이벤트
+$("#button-send").on("click", function(e) {
+	sendMessage();
+	$('#msg').val('')
+});
 
-        function clearText(){
-            console.log(messages.parentNode);
-            messages.parentNode.removeChild(messages)
-      	}
-        
+var sock = new SockJS('http://localhost:8089/study/echo?roomId='+'${param.roomId }');
+sock.onmessage = onMessage;
+sock.onclose = onClose;
+sock.onopen = onOpen;
 
-        
-  </script>
+function sendMessage() {
+	sock.send("${sessionScope.id}:" + $("#msg").val());
+}
+//서버에서 메시지를 받았을 때
+function onMessage(msg) {
+	
+	var data = msg.data;
+	var sessionId = null; //데이터를 보낸 사람
+	var message = null;
+	
+	var arr = data.split(":");
+	
+	for(var i=0; i<arr.length; i++){
+		console.log('arr[' + i + ']: ' + arr[i]);
+	}
+	
+	var cur_session = '${sessionScope.id}'; //현재 세션에 로그인 한 사람
+	console.log("cur_session : " + cur_session);
+	
+	sessionId = arr[0];
+	message = arr[1];
+	
+    //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
+	if(sessionId == cur_session){
+		
+		var str = "<div class='col-6'>";
+		str += "<div class='alert alert-secondary'>";
+		str +=  message + "</b>";
+		str += "</div></div>";
+		
+		$("#msgArea").append(str);
+	}
+	else{
+		
+		var str = "<div class='col-6'>";
+		str += "<div class='alert alert-warning'>";
+		str += "<b>" + sessionId + "<br>" + message + "</b>";
+		str += "</div></div>";
+		
+		$("#msgArea").append(str);
+	}
+	
+}
+//채팅창에서 나갔을 때
+function onClose(evt) {
+	
+	alert("잘못된 접근입니다.");
+	
+	history.back();
+}
+//채팅창에 들어왔을 때
+function onOpen(evt) {
+	
+	console.log(evt);
+	
+	var user = '${sessionScope.id}';
+	var str = user + "님이 입장하셨습니다.";
+	
+	$("#msgArea").append(str);
+}
+
+</script>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
 </body>
 </html>
