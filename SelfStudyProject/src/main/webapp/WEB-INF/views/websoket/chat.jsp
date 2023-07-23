@@ -49,7 +49,7 @@ sock.onclose = onClose;
 sock.onopen = onOpen;
 
 function sendMessage() {
-	sock.send("${sessionScope.id}:" + $("#msg").val());
+	sock.send("message,"+"${sessionScope.id}," + $("#msg").val());
 }
 //서버에서 메시지를 받았을 때
 function onMessage(msg) {
@@ -58,7 +58,7 @@ function onMessage(msg) {
 	var sessionId = null; //데이터를 보낸 사람
 	var message = null;
 	
-	var arr = data.split(":");
+	var arr = data.split(",");
 	
 	for(var i=0; i<arr.length; i++){
 		console.log('arr[' + i + ']: ' + arr[i]);

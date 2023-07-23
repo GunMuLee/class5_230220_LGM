@@ -8,10 +8,40 @@
 		where id_1 = #{id_1} and id_2 = #{id_2}
 	</select>
 	
-	<select id="selectChatRoom" resultType="com.self.study.vo.chatRoomVo">
+	<select id="selectChatList" resultType="com.self.study.vo.chatRoomVo">
 		select *
 		from chatroom
 		where id_2 = #{id_2}
 	</select>
-
+	
+	<insert id="insertChatRoom">
+		INSERT INTO chatroom
+			VALUES(
+				#{roomId}
+				,#{id_1}
+				,#{id_2}
+			);
+	</insert>
+	
+	<insert id="insertChat">
+		INSERT INTO chat
+			VALUES(
+				NULL
+				,#{roomId}
+				,#{sender}
+				,#{receiver}
+				,#{content}
+			)
+	</insert>
+	
+	<insert id="insertAlarm">
+		INSERT INTO Alarm
+			VALUES(
+				NULL
+				,#{id}
+				,#{content}
+				,#{url}
+				,#{isread}
+			)
+	</insert>
 </mapper>

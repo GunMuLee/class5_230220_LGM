@@ -95,7 +95,6 @@
 				$("#area").remove();
 				
 				$("#passwd2").after(
-					
 					 "<div style='color: red;' id='area'>"
 					+ "비밀번호가 일치하지 않습니다."
 					+ "</div>"
@@ -103,7 +102,6 @@
 			} else {
 				$("#area").remove();
 				$("#passwd2").after(
-						
 						"<div style='color: green;' id='area'>"
 						+ "비밀번호가 일치합니다."
 						+ "</div>"

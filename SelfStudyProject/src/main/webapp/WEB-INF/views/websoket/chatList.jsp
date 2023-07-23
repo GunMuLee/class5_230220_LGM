@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib  %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,10 +21,11 @@
 	<button id="createChatRoom" class="btn btn-primary">1대1 문의하기</button>
 	
 	<table>
-	
-		<tr>
-			<td><button class="btn btn-outline-primary"></button></td>
-		</tr>
+		<c:forEach items="${RoomList }" var="chatRoom">
+			<tr>
+				<td><button class="btn btn-outline-primary" onclick="location.href='chat?roomId=${chatRoom.roomId}=${chatRoom.id_1 }'">${chatRoom.id_1 }</button></td>
+			</tr>
+		</c:forEach>
 	</table>
 	
 	<script type="text/javascript">

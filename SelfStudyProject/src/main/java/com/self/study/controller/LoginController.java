@@ -41,8 +41,6 @@ public class LoginController {
 		
 		session.setAttribute("id", id);
 		
-		model.addAttribute("passwd", passwd);
-		
 		return "redirect:/";
 	}
 	

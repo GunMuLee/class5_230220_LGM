@@ -34,10 +34,16 @@ public class ChatController {
 		chatRoomVo isChatroom = service.getChatRoom(ChatRoom);
 		
 		if(isChatroom != null) {
-			return isChatroom.getRoom_id();
+			return isChatroom.getRoomId();
 		}
 		
-		return UUID.randomUUID().toString().split("-")[0];
+		String roomId = UUID.randomUUID().toString().split("-")[0];
+		
+		ChatRoom.setRoomId(roomId);
+		
+		int insertCount = service.addChatRoom(ChatRoom);
+		
+		return roomId;
 	}
 	
 	@GetMapping("chatList")
